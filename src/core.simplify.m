@@ -3,7 +3,7 @@
 %-----------------------------------------------------------------------%
 :- module core.simplify.
 %
-% Copyright (C) 2018-2019 Plasma Team
+% Copyright (C) 2018-2020 Plasma Team
 % Distributed under the terms of the MIT see ../LICENSE.code
 %
 % Plasma simplifcation step
@@ -55,7 +55,8 @@ simplify_expr(Renaming, !Expr) :-
         )
     ; ExprType = e_lets(Lets0, InExpr0),
         simplify_lets(Lets0, [], Lets, Renaming, RenamingIn),
-        rename_expr(RenamingIn, InExpr0, InExpr),
+        rename_expr(RenamingIn, InExpr0, InExpr1),
+        simplify_expr(init, InExpr1, InExpr),
         ( if
             is_empty_tuple_expr(InExpr),
             Lets = [e_let([], LetExpr)]
